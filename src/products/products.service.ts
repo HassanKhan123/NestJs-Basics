@@ -1,9 +1,15 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from './product.model';
+import { InjectModel } from '@nestjs/mongoose';
+import {Model} from 'mongoose'
 
 @Injectable()
 export class ProductsService {
   private products: Product[] = [];
+
+  constructor(@InjectModel('Product') private readonly productModel:Model<Product>){
+
+  }
 
   insertProduct(title: string, description: string, amount: number) {
       const prodId = Math.random().toString();
