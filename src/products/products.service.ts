@@ -30,4 +30,25 @@ export class ProductsService {
 
       return {...product}
   }
+
+  updateProduct(prodId:string,prodTitle:string,prodDesc:string,prodAmount:number){
+    const productIndex = this.products.findIndex(prod => prod.id === prodId)
+    const product = this.products[productIndex]
+    if(!product){
+        throw new NotFoundException('Could not find product')
+    }
+
+    if(prodTitle){
+        product.title = prodTitle
+    }
+    if(prodDesc){
+        product.description = prodDesc
+    }
+    if(prodAmount){
+        product.amount = prodAmount
+    }
+
+
+    return product
+  }
 }
