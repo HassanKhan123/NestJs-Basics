@@ -51,4 +51,15 @@ export class ProductsService {
 
     return product
   }
+
+  deleteProduct(prodId){
+    const productIndex = this.products.findIndex(prod => prod.id === prodId)
+    const product = this.products[productIndex]
+    if(!product){
+        throw new NotFoundException('Could not find product')
+    }
+
+   this.products.splice(productIndex,1)
+}
+  
 }
