@@ -35,13 +35,24 @@ export class ProductsService {
     }
   }
 
-  getProduct(prodId) {
-    const product = this.products.find(prod => prod.id === prodId);
-    if (!product) {
-      throw new NotFoundException('Could not find product');
-    }
-
-    return { ...product };
+  async getProduct(prodId:string):Promise<Product> {
+      try {
+        const product = await this.productModel.findById(prodId);
+        if (!product) {
+            throw new NotFoundException('Could not find product');
+          }
+      
+          return {
+            id: product._id,
+            title: product.title,
+            description: product.description,
+            amount: product.amount,
+          };
+      } catch (error) {
+        throw new NotFoundException('Could not find product');
+      }
+    
+    
   }
 
   updateProduct(
