@@ -35,49 +35,50 @@ export class ProductsService {
     }
   }
 
-  async getProduct(prodId:string):Promise<Product> {
-      try {
-        const product = await this.productModel.findById(prodId);
-        if (!product) {
-            throw new NotFoundException('Could not find product');
-          }
-      
-          return {
-            id: product._id,
-            title: product.title,
-            description: product.description,
-            amount: product.amount,
-          };
-      } catch (error) {
+  async getProduct(prodId: string): Promise<Product> {
+    try {
+      const product = await this.productModel.findById(prodId);
+      if (!product) {
         throw new NotFoundException('Could not find product');
       }
-    
-    
+
+      return {
+        id: product._id,
+        title: product.title,
+        description: product.description,
+        amount: product.amount,
+      };
+    } catch (error) {
+      throw new NotFoundException('Could not find product');
+    }
   }
 
-  updateProduct(
+  async updateProduct(
     prodId: string,
     prodTitle: string,
     prodDesc: string,
     prodAmount: number,
-  ) {
-    const productIndex = this.products.findIndex(prod => prod.id === prodId);
-    const product = this.products[productIndex];
-    if (!product) {
+  ): Promise<Product> {
+    try {
+      const updatedProduct = await this.productModel.findById(prodId);
+      if (!updatedProduct) {
+        throw new NotFoundException('Could not find product');
+      }
+      if (prodTitle) {
+        updatedProduct.title = prodTitle;
+      }
+      if (prodDesc) {
+        updatedProduct.description = prodDesc;
+      }
+      if (prodAmount) {
+        updatedProduct.amount = prodAmount;
+      }
+
+      updatedProduct.save();
+      return updatedProduct
+    } catch (error) {
       throw new NotFoundException('Could not find product');
     }
-
-    if (prodTitle) {
-      product.title = prodTitle;
-    }
-    if (prodDesc) {
-      product.description = prodDesc;
-    }
-    if (prodAmount) {
-      product.amount = prodAmount;
-    }
-
-    return product;
   }
 
   deleteProduct(prodId) {

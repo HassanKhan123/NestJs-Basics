@@ -32,18 +32,20 @@ export class ProductsController {
   }
 
   @Put(':id')
-  updateProduct(
+  async updateProduct(
     @Param('id') prodId: string,
     @Body('title') prodTitle: string,
     @Body('description') prodDesc: string,
-    @Body('price') prodPrice: number,
+    @Body('amount') prodPrice: number,
   ) {
-    return this.productsService.updateProduct(
+    const res = await this.productsService.updateProduct(
       prodId,
       prodTitle,
       prodDesc,
       prodPrice,
     );
+
+    return res
   }
 
   @Delete(':id')
