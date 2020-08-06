@@ -21,8 +21,18 @@ export class ProductsService {
     }
   }
 
-  getProducts() {
-    return [...this.products];
+  async getProducts() {
+    try {
+      const products = await this.productModel.find().exec();
+      return products.map(prod => ({
+        id: prod._id,
+        title: prod.title,
+        description: prod.description,
+        amount: prod.amount,
+      }));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   getProduct(prodId) {
